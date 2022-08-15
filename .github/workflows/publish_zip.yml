@@ -1,0 +1,23 @@
+name: publish_zip
+
+on: 
+  release:
+    types: [prereleased, released]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Archive Release
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'crowdsec_chrome_extension.zip'
+        exclusions: '*.git* /*node_modules/* .editorconfig'
+  
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "crowdsec_chrome_extension.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
